@@ -1,11 +1,11 @@
 package rood.mark.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import rood.mark.domain.Catagory;
+import rood.mark.domain.Category;
 
 import java.util.Optional;
 
-public interface CategoryRepository extends CrudRepository<Catagory,Long> {
+public interface CategoryRepository extends CrudRepository<Category,Long> {
 
-    Optional<Catagory> findByDescription(String description);
+    Optional<Category> findByDescription(String description);
 }

@@ -1,34 +1,25 @@
 package rood.mark.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import rood.mark.domain.Catagory;
-import rood.mark.domain.UnitOfMeasure;
-import rood.mark.repository.CategoryRepository;
-import rood.mark.repository.UnitOfMeasureRepository;
-
-import javax.swing.text.html.Option;
-import java.util.Optional;
+import rood.mark.services.RecipeService;
 
 @Controller
-public class IndexController {
+public class IndexController{
 
-    private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
+    private final RecipeService recipeService;
 
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+    public IndexController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
+    @RequestMapping({"", "/", "/index"})
+    public String getIndexPage(Model model) {
 
+        System.out.println("I made it here!!");
 
-    @RequestMapping({"","/","/index","/index.html"})
-    public String getIndexPage(){
-        Optional<Catagory> categoryOptional = categoryRepository.findByDescription("American");
-        Optional<UnitOfMeasure> uomOtional = unitOfMeasureRepository.findByDescription("Tablespoon");
-        System.out.println("Cat id = "+categoryOptional.get().getId());
-        System.out.println("UOM id = "+uomOtional.get().getId());
+        model.addAttribute("recipes", recipeService.getRecipes());
 
         return "index";
     }

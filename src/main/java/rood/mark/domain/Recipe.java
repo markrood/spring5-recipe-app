@@ -1,8 +1,9 @@
 package rood.mark.domain;
 
-import org.hibernate.engine.internal.Cascade;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,12 +13,14 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
     private String description;
     private Integer prepTime;
     private Integer cookTime;
     private Integer servings;
     private String source;
     private String url;
+    @Lob
     private String direction;
     //todo
     //private Difficulty difficulty
@@ -26,6 +29,8 @@ public class Recipe {
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
 
@@ -33,10 +38,10 @@ public class Recipe {
     @JoinTable(name ="recipe_category",
             joinColumns = @JoinColumn(name ="recipe_id"),
             inverseJoinColumns = @JoinColumn(name ="category_id"))
-    private Set<Catagory> catagories;
+    private Set<Category> categories = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -126,12 +131,12 @@ public class Recipe {
         this.notes = notes;
     }
 
-    public Set<Catagory> getCatagories() {
-        return catagories;
+    public Set<Category> getCatagories() {
+        return categories;
     }
 
-    public void setCatagories(Set<Catagory> catagories) {
-        this.catagories = catagories;
+    public void setCatagories(Set<Category> catagories) {
+        this.categories = catagories;
     }
 
     public Set<Ingredient> getIngredients() {
